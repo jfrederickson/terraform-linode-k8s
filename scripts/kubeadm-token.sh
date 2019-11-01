@@ -2,8 +2,19 @@
 
 set -e
 
+if [ -x $(which python3) ]
+then PYTHON=$(which python3)
+elif [ -x $(which python2) ]
+then PYTHON=$(which python2)
+elif [ -x $(which python) ]
+then PYTHON=$(which python)
+else
+    echo "No python install found; exiting"
+    exit 1
+fi
+
 # Extract "host" argument from the input into HOST shell variable
-eval "$(python3 -c 'import sys, json; print("HOST="+json.load(sys.stdin)["host"])')"
+eval "$($PYTHON -c 'import sys, json; print("HOST="+json.load(sys.stdin)["host"])')"
 
 # TODO: pass the ssh key into this command
 # Fetch the join command
